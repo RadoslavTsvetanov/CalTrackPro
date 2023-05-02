@@ -7,7 +7,7 @@ export default function Signup(){
         Email:"",
     })
     function handleChange(event) {
-        console.log(event)
+        console.log()
         const {name, value, type, checked} = event.target
         setFormData(prevFormData => {
             return {
@@ -20,11 +20,12 @@ export default function Signup(){
         <div>
             <h1>Signup</h1>
             <form>
-                <input type="text"
+            <input type="text"
                 placeholder="Name"
                 onChange={handleChange}
                 name="firstName"
-                value={formData.Name}/>
+                value={formData.Name}
+            />
             <input 
                 type="email"
                 placeholder="Email"
@@ -38,7 +39,7 @@ export default function Signup(){
                 onChange={handleChange}
                 name="Password"
                 value={formData.Password}
-        />
+            />
             </form>
             
         </div>
