@@ -6,7 +6,7 @@ export default function Signup(){
         Password:"",
         Email:"",
     })
-    function handleChange(event) {
+    function handleChange(event:React.ChangeEvent<HTMLInputElement>) {
         console.log()
         const {name, value, type, checked} = event.target
         setFormData(prevFormData => {
