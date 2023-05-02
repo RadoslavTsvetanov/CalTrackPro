@@ -28,6 +28,6 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs"
-, "src/pages/signup.jsx", "src/components/layout.tsx"  ],
+, "src/components/layout.tsx"  ],
   "exclude": ["node_modules"]
 }
