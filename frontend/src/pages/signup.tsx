@@ -1,7 +1,16 @@
 import React,{useEffect} from "react"
+import {useCookies} from "react-cookie"
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from 'next/router'
 export default function Signup(){
+    const [cookies,setCookie] = useCookies();
+    function SetCookieHandler(name:string){
+        
+        setCookie('name',name,{
+            path:'/',
+            maxAge: 30 * 24 * 60 * 60
+        })
+    }
     const router = useRouter()
     const { data: sessionData } = useSession();
     const [formData,setFormData] = React.useState({
@@ -22,6 +31,7 @@ export default function Signup(){
     useEffect(() =>{
         console.log(sessionData)
         if(sessionData?.user?.name){
+            SetCookieHandler(sessionData.user.name)
             router.replace('/home').then(() => {console.log(sessionData)}).catch(() => {console.log(sessionData)})
         }
     });
