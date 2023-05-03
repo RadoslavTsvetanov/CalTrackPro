@@ -9,7 +9,7 @@ const Home: NextPage = () => {
         <div className="flex gap-9">
           <div >
             <p>Welcome back</p>
-            <Link href = {"/login"} className="text-blue-700">login</Link>  
+            <Link href = {"/login"} className="text-blue-700">login1</Link>  
           </div>
           <div>
             <p>New here</p>
