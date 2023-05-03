@@ -1,6 +1,9 @@
-import React from "react"
-
+import React,{useEffect} from "react"
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from 'next/router'
 export default function Signup(){
+    const router = useRouter()
+    const { data: sessionData } = useSession();
     const [formData,setFormData] = React.useState({
         Name:"",
         Password:"",
@@ -16,6 +19,12 @@ export default function Signup(){
             }
         })
     }
+    useEffect(() =>{
+        console.log(sessionData)
+        if(sessionData?.user?.name){
+            router.replace('/home').then(() => {console.log(sessionData)}).catch(() => {console.log(sessionData)})
+        }
+    });
     return (
         <div>
             <h1>Signup</h1>
@@ -41,7 +50,13 @@ export default function Signup(){
                 value={formData.Password}
             />
             </form>
-            
+            <p>or Sign up with Github</p>
+            <button
+              className="btn-ghost rounded-btn btn"
+              onClick={() => void signIn()}
+            >
+              Sign in
+            </button>
         </div>
     )
 }
