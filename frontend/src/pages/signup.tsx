@@ -44,6 +44,7 @@ export default function Signup(){
                 onChange={handleChange}
                 name="firstName"
                 value={formData.Name}
+                className = ""
             />
             <input 
                 type="email"
