@@ -20,9 +20,6 @@ import { type Session } from "next-auth";
 
 import { getServerAuthSession } from "../auth";
 import { prisma } from "../db";
-import { httpBatchLink } from '@trpc/client';
-import { createTRPCNext } from '@trpc/next';
-import type { AppRouter } from '../server/routers/_app';
 type CreateContextOptions = {
   session: Session | null;
 };
