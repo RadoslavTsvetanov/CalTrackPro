@@ -7,9 +7,9 @@ export const userRouter = createTRPCRouter({
     .query(async ({ ctx,input }) => {
         const { name } = input;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-        const user  = await ctx.prisma.user.findOne({
+        const user  = await ctx.prisma.user.findMany({
             where:{
-                name,
+                name:name,
             },
             include: {
                 foodStats: true,
@@ -17,7 +17,7 @@ export const userRouter = createTRPCRouter({
             },
         });
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-        return user?.foodStats;
+        return user;
     }),
     createUserFoods:protectedProcedure
     .input(z.object({

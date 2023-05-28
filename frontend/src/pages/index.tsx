@@ -1,8 +1,21 @@
 import { type NextPage } from "next";
 import Link from "next/link";
+
 import { api, type RouterOutputs } from "../utils/api";
+import { useCookies } from "react-cookie";
 const Home: NextPage = () => {
-  const test = 
+  const [cookies,setCookie] = useCookies(['name']);
+  const test = api.user.getUserStats.useQuery(
+    {
+      name:"Radoslav"
+    },
+    {
+      enabled:true,
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    }
+  )
   return (
     <div className = "flex items-center justify-center">
       <div className = "">
@@ -19,7 +32,7 @@ const Home: NextPage = () => {
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default Home;
