@@ -11,6 +11,6 @@ export default function Pfp(){
     })
     return (
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        <Link href = "http://localhost:3000/home/user"><Image src="" alt = {cookies.name}/></Link>
+        <div className="rounded-3xl bg-yellow-400"><Link href = "http://localhost:3000/home/user"><Image src="" alt = {cookies.name}/><p>{cookies.name}</p></Link></div>
     )
 }
