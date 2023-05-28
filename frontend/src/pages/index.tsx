@@ -1,7 +1,8 @@
 import { type NextPage } from "next";
 import Link from "next/link";
-
+import { api, type RouterOutputs } from "../utils/api";
 const Home: NextPage = () => {
+  const test = 
   return (
     <div className = "flex items-center justify-center">
       <div className = "">

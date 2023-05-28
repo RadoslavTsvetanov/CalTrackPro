@@ -42,6 +42,26 @@ export const userRouter = createTRPCRouter({
     }catch(err){
         console.log(err)
     }
+    }),
+    userExample:protectedProcedure.query(() => {
+        return "hi"
+    }),
+    updateUserStats:protectedProcedure
+    .input(z.object({
+        name: z.string().nonempty(),
+        protein:z.number().int(),
+        carbs:z.number().int(),fats:z.number().int(),
+    }))
+    .mutation(({ctx,input}) => {
+        const {protein,carbs,fats} = input;
+        return ctx.prisma.foodStats.update({
+            where:{
+                
+            },
+            data:{
 
+            }
+        })
     })
+
 })
