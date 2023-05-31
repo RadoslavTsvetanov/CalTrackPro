@@ -1,44 +1,22 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-interface FormData {
+import React from 'react';
+
+export interface FormData {
   protein: number;
   carbs: number;
-  fats: number;
+  fat: number;
   calories: number;
 }
 
-const FormHandler: React.FC = (props) => {
-  
-  const [formData, setFormData] = useState<FormData>(
-    {
-      protein: 0,
-    carbs: 0,
-    fats: 0,
-    calories: 0,
-  });
+interface ChildComponentProps {
+  formData: FormData;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+}
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    console.log(formData); // You can perform further actions with the form data here
-    // Reset the form
-    
-    setFormData({
-        protein: 0,
-        carbs: 0,
-        fats:0,
-        calories: 0,
-    });
-  };
-
+function FormHandler({ formData, handleChange, handleSubmit }: ChildComponentProps) {
   return (
     <form onSubmit={handleSubmit}>
-      <div>
+      <div className="flex items-center">
         <label htmlFor="protein">Protein</label>
         <input
           type="number"
@@ -48,8 +26,8 @@ const FormHandler: React.FC = (props) => {
           onChange={handleChange}
         />
       </div>
-      <div>
-        <label htmlFor="email">Carbs</label>
+      <div className="flex items-center">
+        <label htmlFor="carbs">Carbs</label>
         <input
           type="number"
           id="carbs"
@@ -58,23 +36,29 @@ const FormHandler: React.FC = (props) => {
           onChange={handleChange}
         />
       </div>
-      <div>
+      <div className="flex items-center">
         <label htmlFor="fat">Fat</label>
         <input
-        type = "number"
+          type="number"
           id="fat"
           name="fat"
-          value={formData.fats}
+          value={formData.fat}
           onChange={handleChange}
         />
       </div>
-      <div>
+      <div className="flex items-center">
         <label htmlFor="calories">Calories</label>
-        <textarea name="calories" id="calories" value={formData.calories} onChange={handleChange}></textarea>
+        <input
+          type="number"
+          id="calories"
+          name="calories"
+          value={formData.calories}
+          onChange={handleChange}
+        />
       </div>
-      <button onClick = {handleSubmit}>Submit</button>
+      <button type="submit">Submit</button>
     </form>
   );
-};
+}
 
 export default FormHandler;

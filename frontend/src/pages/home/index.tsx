@@ -6,7 +6,7 @@ import { api } from '~/utils/api';
 import FillBar from '~/components/fillBar';
 import OptionsInput from '~/components/CustomFoodForm';
 import { string } from 'zod';
-import FormHandler from "~/components/Standardform";
+import FormHandler, { FormData } from "~/components/Standardform";
 export default function Comp(){
     
     const router = useRouter();
@@ -64,11 +64,47 @@ const options = userFoods.map((food) => {
     return {label:food.name,value:food.value}
 })
     
-      const [selectedOption, setSelectedOption] = React.useState('option1');
+      const [selectedOption, setSelectedOption] = React.useState('');
     
       const handleOptionChange = (selectedValue: string) => {
+        let Food = userFoods.find(food => food.name === selectedValue)
+        setFormData({
+            protein:Food.protein,
+            fats:Food.fats,
+            carbs:Food.carbs,
+            calories:Food.calories,
+        })
         setSelectedOption(selectedValue);
       };
+
+
+
+
+
+
+
+
+      //!!!NORMAL FORM START
+      const [formData, setFormData] = React.useState<FormData>({
+        protein:0,
+        carbs:20,
+        fat: 0,
+        calories: 0
+      });
+    
+      const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: value
+        }));
+      };
+    
+      const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        // Handle form submission logic here
+      };
+      //!!!END OF NORMAL FORM
     return (
         <div className = "w-screen h-screen flex items-center justify-center bg-[#112d33] text-[#d0d2d4]">
             <div className=''>
@@ -93,7 +129,8 @@ const options = userFoods.map((food) => {
                 </div>
             </div>
             {showFood && <div className = 'absolute mx-auto bg-black w-[50vw] h-[50vh] rounded-lg shadow-lg p-4'>
-                <FormHandler/>
+                <h3>Add Meal</h3>
+                <FormHandler formData={formData} handleChange={handleChange} handleSubmit={handleSubmit}/>
             <button onClick={showAdd
             } className='absolute right-20 bottom-20 rounded-3xl bg-slate-600 p-7'>Done</button>
             <OptionsInput
