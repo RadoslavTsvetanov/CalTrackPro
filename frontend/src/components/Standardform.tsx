@@ -1,5 +1,4 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { api } from '~/utils/api';
 interface FormData {
   protein: number;
   carbs: number;
@@ -7,12 +6,13 @@ interface FormData {
   calories: number;
 }
 
-const FormHandler: React.FC = () => {
+const FormHandler: React.FC = (props) => {
   
-  const [formData, setFormData] = useState<FormData>({
-    protein: 0,
+  const [formData, setFormData] = useState<FormData>(
+    {
+      protein: 0,
     carbs: 0,
-    fats:0,
+    fats: 0,
     calories: 0,
   });
 
@@ -27,6 +27,7 @@ const FormHandler: React.FC = () => {
     e.preventDefault();
     console.log(formData); // You can perform further actions with the form data here
     // Reset the form
+    
     setFormData({
         protein: 0,
         carbs: 0,
@@ -50,7 +51,7 @@ const FormHandler: React.FC = () => {
       <div>
         <label htmlFor="email">Carbs</label>
         <input
-          type="carbs"
+          type="number"
           id="carbs"
           name="carbs"
           value={formData.carbs}
@@ -59,12 +60,13 @@ const FormHandler: React.FC = () => {
       </div>
       <div>
         <label htmlFor="fat">Fat</label>
-        <textarea
+        <input
+        type = "number"
           id="fat"
           name="fat"
           value={formData.fats}
           onChange={handleChange}
-        ></textarea>
+        />
       </div>
       <div>
         <label htmlFor="calories">Calories</label>

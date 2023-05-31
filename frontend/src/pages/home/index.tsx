@@ -6,6 +6,7 @@ import { api } from '~/utils/api';
 import FillBar from '~/components/fillBar';
 import OptionsInput from '~/components/CustomFoodForm';
 import { string } from 'zod';
+import FormHandler from "~/components/Standardform";
 export default function Comp(){
     
     const router = useRouter();
@@ -53,11 +54,12 @@ export default function Comp(){
         // })
         const mappedStats = Object.entries(foodStats).map(([key, value]) => {
             // Transform the key or value as needed
-            return <FillBar value={value} text={key} />;
+            return <FillBar value={value || 0} text={key} key={key} color={"none"}/>;
           });
-        setUserStats(mappedStats)}
+        setUserStats(mappedStats || [])
+    }
         
-},[])
+},[cookies.name,user.data,router])
 const options = userFoods.map((food) => {
     return {label:food.name,value:food.value}
 })
@@ -91,6 +93,7 @@ const options = userFoods.map((food) => {
                 </div>
             </div>
             {showFood && <div className = 'absolute mx-auto bg-black w-[50vw] h-[50vh] rounded-lg shadow-lg p-4'>
+                <FormHandler/>
             <button onClick={showAdd
             } className='absolute right-20 bottom-20 rounded-3xl bg-slate-600 p-7'>Done</button>
             <OptionsInput
