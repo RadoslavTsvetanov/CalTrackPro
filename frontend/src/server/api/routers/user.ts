@@ -14,6 +14,7 @@ export const userRouter = createTRPCRouter({
             include: {
                 foodStats: true,
                 foods:true,
+                eatenFoods:true
             },
         });
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
@@ -45,17 +46,23 @@ export const userRouter = createTRPCRouter({
     }),
     updateUserStats:protectedProcedure
     .input(z.object({
-        name: z.string().nonempty(),
+        id:z.string().nonempty(),
         protein:z.number().int(),
-        carbs:z.number().int(),fats:z.number().int(),
+        carbs:z.number().int(),
+        fats:z.number().int(),
+        calories:z.number().int(),
     }))
     .mutation(({ctx,input}) => {
-        const {protein,carbs,fats} = input;
+        const {id,protein,carbs,fats,calories} = input;
         return ctx.prisma.foodStats.update({
             where:{
+                userId:id
             },
             data:{
-
+                protein,
+                carbs,
+                fats,
+                calories
             }
         })
     })

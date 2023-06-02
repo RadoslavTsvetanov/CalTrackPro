@@ -48,15 +48,16 @@ model User {
     sessions      Session[]
     foodStats     FoodStats[]
     foods         UserFood[]
+    eatenFoods    EatenFood[]
 }
 
 model FoodStats {
     day      Int //tos save for 30 days
     id       String @id @default(cuid())
-    carbs    Int
-    protein  Int
-    fats     Int
-    calories Int
+    carbs    Int    @default(0)
+    protein  Int    @default(0)
+    fats     Int    @default(0)
+    calories Int    @default(0)
     user     User   @relation(fields: [userId], references: [id])
     userId   String
 }
@@ -70,6 +71,19 @@ model UserFood {
     calories Int
     user     User   @relation(fields: [userId], references: [id])
     userId   String
+}
+
+model EatenFood {
+    id        String   @id @default(cuid())
+    name      String
+    calories  Int
+    fat       Int
+    protein   Int
+    carbs     Int
+    userId    String
+    createdAt DateTime @default(now())
+
+    user User @relation(fields: [userId], references: [id])
 }
 
 model VerificationToken {

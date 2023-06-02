@@ -7,8 +7,10 @@ import FillBar from '~/components/fillBar';
 import OptionsInput from '~/components/CustomFoodForm';
 import { string } from 'zod';
 import FormHandler, { FormData } from "~/components/Standardform";
+import AddCustomFood from '~/components/AddCustomFoodForm';
 export default function Comp(){
-    
+    const [eatenFoods,setEatenFoods] = React.useState([])
+    const [showAddNewFood,setShowAddNewFood] = React.useState(false)
     const router = useRouter();
     const [userFoods,steUserFoods] = React.useState([])
     const [showFood,setShowAddFood] = React.useState(false)
@@ -17,7 +19,11 @@ export default function Comp(){
     const [userStats,setUserStats]= React.useState([])
     const [cookies,setCookie] = useCookies(['name']);
     const short_stats = [{},{},{},{}]
-    
+    const [rawUserStats,setRawUserStats] = React.useState({
+        protein: 0,
+        carbs: 0,
+        fat: 0
+    })
     const user = api.user.getUserStats.useQuery(
         {
           name:"Radoslav",
@@ -29,8 +35,13 @@ export default function Comp(){
     const add = () => {
         showAdd();
         // api.user.updateUserStats.useMutation({
-
-        // })
+        //         data:{
+        //         calories:cals + formData.calories,
+        //         protein:rawUserStats.protein + formData.protein,
+        //         carbs:rawUserStats.carbs + formData.carbs,
+        //         fats:rawUserStats.fat + formData.fat
+        //         },
+        //  })
     }
     const showAdd = () => {
         setShowAddFood(!showFood)
@@ -47,6 +58,7 @@ export default function Comp(){
             fats:user?.data[0]?.foodStats[0]?.fats,
             carbs:user?.data[0]?.foodStats[0]?.carbs,
         }
+        setRawUserStats(foodStats)
         steUserFoods(user?.data[0]?.foods)
         setCals(user?.data[0]?.foodStats[0]?.calories || 0)
         // const foodStats = user?.data[0]?.foodStats.map((foodStat) => {
@@ -120,7 +132,9 @@ const options = userFoods.map((food) => {
                     </div>
                     <div>
                         <p>What you have eaten today</p>
-                        {}
+                        {
+                            eatenFoods
+                        }
                         
                     </div>
                     <div>
@@ -130,7 +144,10 @@ const options = userFoods.map((food) => {
             </div>
             {showFood && <div className = 'absolute mx-auto bg-black w-[50vw] h-[50vh] rounded-lg shadow-lg p-4'>
                 <h3>Add Meal</h3>
-                <FormHandler formData={formData} handleChange={handleChange} handleSubmit={handleSubmit}/>
+                <FormHandler formData={formData} handleChange={handleChange} handleSubmit={handleSubmit}/> 
+                <button className='absolute right-20 bottom-20 rounded-3xl bg-slate-600 p-7' onClick={() => {
+                    setShowAddNewFood(!showAddNewFood)
+                }}>Add new Food</button>
             <button onClick={showAdd
             } className='absolute right-20 bottom-20 rounded-3xl bg-slate-600 p-7'>Done</button>
             <OptionsInput
@@ -141,6 +158,9 @@ const options = userFoods.map((food) => {
             </div>}
             <button className='absolute right-20 bottom-20 rounded-3xl bg-slate-600 p-7' onClick={add}>+
             </button>
+            {showAddNewFood && <div className='absolute left-20 bottom-20'><AddCustomFood submitAction={() => {
+                setShowAddNewFood(!showAddNewFood)
+            }}/></div>}
         </div>
     )
 }
