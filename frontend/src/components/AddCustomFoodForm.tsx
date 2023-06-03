@@ -8,25 +8,24 @@ interface FormValues {
 }
 
 interface Props {
+    handleChange:(e:React.ChangeEvent<HTMLInputElement>) => void,
     submitAction: () => void;
+    formData:{
+        name : string,
+        fats: number;
+        carbs: number;
+        protein: number;
+        calories: number;
+    }
   }
 
 
 const AddCustomFood: React.FC<Props> = (props) => {
   const [formValues, setFormValues] = useState<FormValues>({
-    fats: 0,
-    carbs: 0,
-    protein: 0,
-    calories: 0,
+    ...props.formData
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      [name]: Number(value),
-    }));
-  };
+  const handleChange = props.handleChange
 
   const handleSubmit = (e: React.FormEvent) => {
     props.submitAction()

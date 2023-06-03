@@ -9,6 +9,29 @@ import { string } from 'zod';
 import FormHandler, { FormData } from "~/components/Standardform";
 import AddCustomFood from '~/components/AddCustomFoodForm';
 export default function Comp(){
+    const [userId,setUserId] = React.useState('')
+    const [addCustomFoodData,setCustomFoodData] = React.useState({
+        name:'',
+        cals:0,
+        carbs:0,
+        fats:0,
+        calories:0,
+        protein:0
+    })
+    const updateUserFoods = api.user.createUserFoods.useMutation({
+        onSuccess: (data) => {
+            console.log("data")
+            console.log(data)
+            user = api.user.getUserStats.useQuery(
+                {
+                  name:"Radoslav",
+                },
+                {
+                  enabled:true,
+                }
+              ) //how to make it in a function idk because it is a hook must ask someone
+        }
+    })
     const {mutate,isLoading} = api.user.updateUserStats.useMutation({
         onSuccess:() => {
             user = api.user.getUserStats.useQuery(
@@ -31,7 +54,6 @@ export default function Comp(){
     const [cals,setCals] = React.useState(0)
     const [userStats,setUserStats]= React.useState([])
     const [cookies,setCookie] = useCookies(['name']);
-    const short_stats = [{},{},{},{}]
     const [rawUserStats,setRawUserStats] = React.useState({
         protein: 0,
         carbs: 0,
@@ -56,28 +78,26 @@ export default function Comp(){
         setShowAddFood(!showFood)
     }
     const add = () => {
-        showAdd();
-    
+        setShowAddFood(!showFood)
     }
     React.useEffect(() => {
         if(!cookies.name){
             router.replace('http://localhost:3000/').then(() => {console.log()}).catch(() => {console.log()})
         }
         console.log("user")
-        if(user.data){
-        console.log(user?.data[0])
+        if(user.data[0].id){
+        setUserId(user.data[0].id)
+        console.log(userId)
         const foodStats = {
             protein:user?.data[0]?.foodStats[0]?.protein,
             fat:user?.data[0]?.foodStats[0]?.fats,
             carbs:user?.data[0]?.foodStats[0]?.carbs,
         }
-        setFoodStatsId(user.data[0]?.foodStats[0]?.id)
+        setFoodStatsId(user.data[0]?.foodStats[0]?.id || '')
         setRawUserStats(foodStats)
         steUserFoods(user?.data[0]?.foods)
         setCals(user?.data[0]?.foodStats[0]?.calories || 0)
-        // const foodStats = user?.data[0]?.foodStats.map((foodStat) => {
-        //     <FillBar text = 
-        // })
+
         const mappedStats = Object.entries(foodStats).map(([key, value]) => {
             // Transform the key or value as needed
             return <FillBar value={value || 0} text={key} key={key} color={"none"}/>;
@@ -87,7 +107,7 @@ export default function Comp(){
         
 },[cookies.name,user.data,router])
 const options = userFoods.map((food) => {
-    return {label:food.name,value:food.value}
+    return {label:food.name || '',value:food.value || 0}
 })
     
       const [selectedOption, setSelectedOption] = React.useState('');
@@ -173,9 +193,18 @@ const options = userFoods.map((food) => {
             </div>}
             <button className='absolute right-20 bottom-20 rounded-3xl bg-slate-600 p-7' onClick={add}>+
             </button>
-            {showAddNewFood && <div className='absolute left-20 bottom-20'><AddCustomFood submitAction={() => {
+            {showAddNewFood && <div className='absolute left-20 bottom-20'><AddCustomFood formData={addCustomFoodData} handleChange={handleChange} submitAction={() => {
+                updateUserFoods.mutate({
+                    protein:addCustomFoodData.protein,
+                    carbs:addCustomFoodData.carbs,
+                    fats:addCustomFoodData.fats,
+                    calories:addCustomFoodData.calories,
+                    name:addCustomFoodData.name,
+                    userId:userId
+                });
                 setShowAddNewFood(!showAddNewFood)
-            }}/></div>}
+            }}/>
+            </div>}
         </div>
     )
 

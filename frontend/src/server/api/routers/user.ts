@@ -26,18 +26,20 @@ export const userRouter = createTRPCRouter({
   fats: z.number().int().positive(),
   protein: z.number().int().positive(),
   userId: z.string().nonempty(),
+  calories: z.number().int().positive(),
     }))
     .mutation(async ({ctx,input}) => {
         try{
-            const { name, carbs, fats, protein, userId } = input;
+            const { name, carbs, fats, protein, userId,calories } = input;
             const user = await ctx.prisma.userFood.create({
             data: {
-                name,
-                carbs,
-                fats,
-                protein,
+                name:name,
+                carbs:carbs,
+                fats:fats,
+                protein:protein,
+                calories:calories,
                 user: { connect: { id: userId } },
-            }
+            },
         })
     }catch(err){
         console.log(err)
