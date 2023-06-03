@@ -9,6 +9,18 @@ import { string } from 'zod';
 import FormHandler, { FormData } from "~/components/Standardform";
 import AddCustomFood from '~/components/AddCustomFoodForm';
 export default function Comp(){
+    const {mutate,isLoading} = api.user.updateUserStats.useMutation({
+        onSuccess:() => {
+            user = api.user.getUserStats.useQuery(
+                {
+                  name:"Radoslav",
+                },
+                {
+                  enabled:true,
+                }
+              ) //how to make it in a function idk because it is a hook must ask someone
+        }
+    })
     const [eatenFoods,setEatenFoods] = React.useState([])
     const [showAddNewFood,setShowAddNewFood] = React.useState(false)
     const router = useRouter();
@@ -24,27 +36,26 @@ export default function Comp(){
         carbs: 0,
         fat: 0
     })
-    const user = api.user.getUserStats.useQuery(
+    var user = api.user.getUserStats.useQuery(
         {
           name:"Radoslav",
         },
         {
           enabled:true,
         }
-      )
+        )
+        const showAdd = () => {
+        mutate({
+            calories: cals + formData.calories,
+            protein: rawUserStats.protein + formData.protein,
+            carbs: rawUserStats.carbs + formData.carbs,
+            fats: rawUserStats.fat + formData.fat
+        })
+        setShowAddFood(!showFood)
+    }
     const add = () => {
         showAdd();
-        // api.user.updateUserStats.useMutation({
-        //         data:{
-        //         calories:cals + formData.calories,
-        //         protein:rawUserStats.protein + formData.protein,
-        //         carbs:rawUserStats.carbs + formData.carbs,
-        //         fats:rawUserStats.fat + formData.fat
-        //         },
-        //  })
-    }
-    const showAdd = () => {
-        setShowAddFood(!showFood)
+    
     }
     React.useEffect(() => {
         if(!cookies.name){
@@ -80,12 +91,13 @@ const options = userFoods.map((food) => {
     
       const handleOptionChange = (selectedValue: string) => {
         let Food = userFoods.find(food => food.name === selectedValue)
-        setFormData({
+        if(Food != undefined){
+            setFormData({
             protein:Food.protein,
             fats:Food.fats,
             carbs:Food.carbs,
             calories:Food.calories,
-        })
+        })}
         setSelectedOption(selectedValue);
       };
 
@@ -163,4 +175,5 @@ const options = userFoods.map((food) => {
             }}/></div>}
         </div>
     )
-}
+
+    }

@@ -14,7 +14,6 @@ export const userRouter = createTRPCRouter({
             include: {
                 foodStats: true,
                 foods:true,
-                eatenFoods:true
             },
         });
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
@@ -56,7 +55,7 @@ export const userRouter = createTRPCRouter({
         const {id,protein,carbs,fats,calories} = input;
         return ctx.prisma.foodStats.update({
             where:{
-                userId:id
+                id:id
             },
             data:{
                 protein,
