@@ -21,6 +21,7 @@ export default function Comp(){
               ) //how to make it in a function idk because it is a hook must ask someone
         }
     })
+    const [foodStatsId,setFoodStatsId] = React.useState("")
     const [eatenFoods,setEatenFoods] = React.useState([])
     const [showAddNewFood,setShowAddNewFood] = React.useState(false)
     const router = useRouter();
@@ -36,7 +37,7 @@ export default function Comp(){
         carbs: 0,
         fat: 0
     })
-    var user = api.user.getUserStats.useQuery(
+    let user = api.user.getUserStats.useQuery(
         {
           name:"Radoslav",
         },
@@ -46,6 +47,7 @@ export default function Comp(){
         )
         const showAdd = () => {
         mutate({
+            id:foodStatsId,
             calories: cals + formData.calories,
             protein: rawUserStats.protein + formData.protein,
             carbs: rawUserStats.carbs + formData.carbs,
@@ -66,9 +68,10 @@ export default function Comp(){
         console.log(user?.data[0])
         const foodStats = {
             protein:user?.data[0]?.foodStats[0]?.protein,
-            fats:user?.data[0]?.foodStats[0]?.fats,
+            fat:user?.data[0]?.foodStats[0]?.fats,
             carbs:user?.data[0]?.foodStats[0]?.carbs,
         }
+        setFoodStatsId(user.data[0]?.foodStats[0]?.id)
         setRawUserStats(foodStats)
         steUserFoods(user?.data[0]?.foods)
         setCals(user?.data[0]?.foodStats[0]?.calories || 0)
