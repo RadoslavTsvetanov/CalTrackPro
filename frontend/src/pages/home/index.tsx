@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { api } from '~/utils/api';
 import FillBar from '~/components/fillBar';
 import OptionsInput from '~/components/CustomFoodForm';
+import EatenFood from '~/components/EatenFoodCard';
 import { string } from 'zod';
 import FormHandler, { FormData } from "~/components/Standardform";
 import AddCustomFood from '~/components/AddCustomFoodForm';
@@ -85,14 +86,18 @@ export default function Comp(){
             router.replace('http://localhost:3000/').then(() => {console.log()}).catch(() => {console.log()})
         }
         console.log("user")
-        if(user.data[0].id){
-        setUserId(user.data[0].id)
+        if(user?.data){
         console.log(userId)
         const foodStats = {
-            protein:user?.data[0]?.foodStats[0]?.protein,
-            fat:user?.data[0]?.foodStats[0]?.fats,
-            carbs:user?.data[0]?.foodStats[0]?.carbs,
+            protein:user?.data[0]?.foodStats[0]?.protein || 0,
+            fat:user?.data[0]?.foodStats[0]?.fats || 0,
+            carbs:user?.data[0]?.foodStats[0]?.carbs || 0,
         }
+        setEatenFoods(user.data[0]?.eatenFoods.map((food) => {
+            return <EatenFood key={name} name = {food.name} protein={food.pr
+            } calories={food.calo
+            } fat = {food.fat} carbs = {food.carbs}/>
+        }))
         setFoodStatsId(user.data[0]?.foodStats[0]?.id || '')
         setRawUserStats(foodStats)
         steUserFoods(user?.data[0]?.foods)

@@ -29,7 +29,6 @@ export default function Signup(){
         })
     }
     useEffect(() =>{
-        console.log(sessionData)
         if(sessionData?.user?.name){
             SetCookieHandler(sessionData.user.name)
             router.replace('/home').then(() => {console.log(sessionData)}).catch(() => {console.log(sessionData)})
@@ -66,7 +65,7 @@ export default function Signup(){
               className="btn-ghost rounded-btn btn"
               onClick={() => void signIn()}
             >
-              Sign in
+              Sign up with github
             </button>
         </div>
     )

@@ -14,6 +14,7 @@ export const userRouter = createTRPCRouter({
             include: {
                 foodStats: true,
                 foods:true,
+                eatenFoods:true,
             },
         });
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
